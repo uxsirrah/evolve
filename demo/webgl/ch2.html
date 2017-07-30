@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+    <script type="text/javascript" src="../common/threejs/three.js"></script>
+    <script type="text/javascript" src="../common/threejs/OBJLoader.js"></script>
+</head>
+<body onload="init()">
+    <canvas id="mainCanvas" width="1024px" height="600px"></canvas>
+</body>
+<script type="text/javascript">
+function init() {
+    var renderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('mainCanvas')
+    });
+    renderer.setClearColor(0x101010);
+
+    var scene = new THREE.Scene();
+
+    var camera = new THREE.PerspectiveCamera(45, 4/4, 1, 1000);
+    camera.position.set(0, 3 ,0);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+
+	var manager = new THREE.LoadingManager();
+	var loader = new THREE.OBJLoader();
+	loader.load('magicube.obj',
+		// onLoad
+		function(obj) {
+			scene.add(obj);
+		},
+		// onProcess
+		function(obj){
+ 			if ( xhr.lengthComputable ) {
+                var percentComplete = xhr.loaded / xhr.total * 100;
+                console.log( Math.round(percentComplete, 2) + '% downloaded' );
+			}
+		},
+		// onError
+		function(xhr) {
+		}
+	);
+
+    renderer.render(scene, camera);
+}
+</script>
+</html>
+
